@@ -2,6 +2,30 @@
 
 <h3 class="text-primary mb-4">📑 Saved Work Tickets</h3>
 
+<!-- Filter Section -->
+<div class="card mb-4 p-3" style="background-color: #f8f9fa;">
+    <h5 class="card-title mb-3">Filter Tickets</h5>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label">Ticket #</label>
+            <input type="text" class="form-control" placeholder="Search by ticket #" @bind="filterTicketNumber" @bind:event="oninput" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Cost Centre</label>
+            <input type="text" class="form-control" placeholder="Search by cost centre" @bind="filterCostCentre" @bind:event="oninput" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Activity</label>
+            <input type="text" class="form-control" placeholder="Search by activity" @bind="filterActivity" @bind:event="oninput" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Operator</label>
+            <input type="text" class="form-control" placeholder="Search by operator" @bind="filterOperator" @bind:event="oninput" />
+        </div>
+    </div>
+    <button class="btn btn-secondary btn-sm mt-3" @onclick="ClearFilters">Clear Filters</button>
+</div>
+
 @if (tickets == null || tickets.Count == 0)
 {
     <div class="alert alert-info">No work tickets have been saved yet.</div>
@@ -81,7 +105,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var t in tickets)
+            @foreach (var t in GetFilteredTickets())
             {
                 <tr>
                     <td>@t.TicketNumber</td>
@@ -107,6 +131,10 @@ else
     private List<WorkTicket> tickets = new();
     private string? editingTicketNumber = null;
     private WorkTicket? editingTicket = null;
+    private string filterTicketNumber = "";
+    private string filterCostCentre = "";
+    private string filterActivity = "";
+    private string filterOperator = "";
 
     protected override void OnInitialized()
     {
@@ -115,6 +143,24 @@ else
         {
             //new WorkTicket { TicketNumber="88777", CostCentre="Manual", Activity="FOLDING", OperatorName="AMary", NumOperators=3, StartDateTime=DateTime.Now.AddHours(-5), EndDateTime=DateTime.Now.AddHours(-1), QuantityIn=200, QuantityOut=190, MaterialUsed="MATT" }
         };
+    }
+
+    private List<WorkTicket> GetFilteredTickets()
+    {
+        return tickets.Where(t =>
+            (string.IsNullOrEmpty(filterTicketNumber) || t.TicketNumber.Contains(filterTicketNumber, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(filterCostCentre) || t.CostCentre.Contains(filterCostCentre, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(filterActivity) || t.Activity.Contains(filterActivity, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrEmpty(filterOperator) || t.OperatorName.Contains(filterOperator, StringComparison.OrdinalIgnoreCase))
+        ).ToList();
+    }
+
+    private void ClearFilters()
+    {
+        filterTicketNumber = "";
+        filterCostCentre = "";
+        filterActivity = "";
+        filterOperator = "";
     }
 
     private void EditTicket(string ticketNumber)
