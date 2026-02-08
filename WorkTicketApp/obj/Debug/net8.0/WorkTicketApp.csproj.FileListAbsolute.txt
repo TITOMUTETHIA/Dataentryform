@@ -27,3 +27,4 @@
 /home/bigfish/Documents/Data Entry work ticket forms/WorkTicketApp/obj/Debug/net8.0/WorkTicketApp.pdb
 /home/bigfish/Documents/Data Entry work ticket forms/WorkTicketApp/obj/Debug/net8.0/WorkTicketApp.genruntimeconfig.cache
 /home/bigfish/Documents/Data Entry work ticket forms/WorkTicketApp/obj/Debug/net8.0/ref/WorkTicketApp.dll
+/home/bigfish/Documents/Data Entry work ticket forms/WorkTicketApp/obj/Debug/net8.0/WorkTicketApp.sourcelink.json
